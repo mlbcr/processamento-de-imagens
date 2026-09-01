@@ -45,17 +45,22 @@ for i in range(imagemCinza.shape[0]):
 
 cv2.imshow("Nova imagem", novaImagem)
 
-plt.figure(figsize=(12, 5))
+plt.figure(figsize=(15, 5))
 
-plt.subplot(1, 2, 1)
+plt.subplot(1, 3, 1)
 plt.bar(pixel, histograma, color="red")
 plt.title("Histograma comum")
 
-plt.subplot(1, 2, 2)
+plt.subplot(1, 3, 2)
 plt.bar(pixel, histogramaNormalizado, color="blue")
 plt.title("Histograma normalizado")
 
+plt.subplot(1, 3, 3)
+plt.bar(pixel, cdf, color="green")
+plt.title("Histograma acumulado")
+plt.ylim(0, 1)
 
+plt.tight_layout()
 plt.show()
 
 cv2.waitKey(0)
