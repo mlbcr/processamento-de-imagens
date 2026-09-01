@@ -43,7 +43,7 @@ novaImagem = np.zeros(
 
 for i in range(imagemCinza.shape[0]):
     for j in range(imagemCinza.shape[1]):
-        novaImagem[i][j] = round(cdf[imagemCinza[i][j]] * 7)
+        novaImagem[i][j] = round(cdf[imagemCinza[i][j]] * 255)
 
 
 histogramaEqualizado = [0] * 256
@@ -75,7 +75,7 @@ plt.title("Histograma acumulado")
 
 plt.subplot(2, 2, 4)
 plt.bar(pixel, histogramaEqualizado, color="purple")
-plt.title("Histograma imagem equalizada")
+plt.title("Histograma imagem especificado")
 
 plt.show()
 
