@@ -4,7 +4,6 @@ import cv2
 
 
 def binarizar(imagem, limite=150):
-    """Transforma a imagem em preto e branco."""
     resultado = np.where(imagem >= limite, 255, 0)
     return resultado.astype(np.uint8)
 
@@ -64,3 +63,62 @@ def dilatacao(imagem, elemento):
 def gradienteMorfologico(imagem, elemento):
     imagemErodida = erosao(imagem, elemento)
     return cv2.subtract(imagem, imagemErodida)
+
+def extrairComponenteConectado(imagem, elemento, pontoInicial):
+
+    altura, largura = imagem.shape
+    X = np.zeros((altura, largura), dtype=np.uint8)
+
+    linha, coluna = pontoInicial
+
+    X[linha][coluna] = 255
+
+    while True:
+        dilatada = dilatacao(X, elemento)
+        novaImagem = cv2.bitwise_and(dilatada, imagem)
+
+        if np.array_equal(novaImagem, X):
+            break
+
+        X = novaImagem
+
+    return X
+
+def esqueletizacao(imagem, elemento):
+    altura, largura = imagem.shape
+
+    imagemAtual = imagem.copy()
+    esqueleto = np.zeros((altura, largura), dtype=np.uint8)
+
+    while True:
+        temPixel = False
+
+        for i in range(altura):
+            for j in range(largura):
+                if imagemAtual[i][j] == 255:
+                    temPixel = True
+                    break
+            if temPixel:
+                break
+
+        if not temPixel:
+            break
+
+        imagemErodida = erosao(imagemAtual, elemento)
+        imagemAberta = dilatacao(imagemErodida, elemento)
+
+        diferenca = np.zeros((altura, largura), dtype=np.uint8)
+
+        for i in range(altura):
+            for j in range(largura):
+                if imagemAtual[i][j] == 255 and imagemAberta[i][j] == 0:
+                    diferenca[i][j] = 255
+
+        for i in range(altura):
+            for j in range(largura):
+                if diferenca[i][j] == 255:
+                    esqueleto[i][j] = 255
+
+        imagemAtual = imagemErodida
+
+    return esqueleto
