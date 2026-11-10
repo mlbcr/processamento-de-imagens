@@ -20,10 +20,9 @@ imagem = binarizar(imagemCinza)
 
 elemento = np.ones((3, 3), dtype=np.uint8)
 
-imagemErodida = erosao(imagem, elemento)
 imagemDilatada = dilatacao(imagem, elemento)
 cv2.imshow("Original", imagem)
-cv2.imshow("Erosao", imagemDilatada)
+cv2.imshow("Dilatada", imagemDilatada)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
